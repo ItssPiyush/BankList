@@ -218,4 +218,4 @@ const calcAverageHumanAge = ages => {
 }
 calcAverageHumanAge([5,2,4,1,15,8,6]);
 
-
+console.log('hello world')
