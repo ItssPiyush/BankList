@@ -130,7 +130,6 @@ const currencies = new Map([
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 /////////////////////////////////////////////////
 
-console.log(movements.find(mov => mov < 0)); 
 // const eurToUsd = 1.1;
 // const movementsUSD = movements.map(mov => 
 //     mov * eurToUsd);
