@@ -92,23 +92,23 @@ const calcDisplayBalance = function(movements){
   const balance = movements.reduce((acc,curr) => acc += curr ,0);
   labelBalance.textContent = `${balance} €`
 }
-calcDisplayBalance(account1.movements)
 
 
-const calcDisplaySummary = function(movements){
-  const incomes = movements
+
+const calcDisplaySummary = function(acc){
+  const incomes = acc.movements
   .filter(mov => mov > 0)
   . reduce((acc,mov) => acc + mov, 0);
   labelSumIn.textContent = `${incomes}€`
 
-  const out = movements
+  const out = acc.movements
   .filter(mov => mov < 0)
   .reduce((acc,mov)=> acc + mov , 0);
   labelSumOut.textContent = `${Math.abs(out)}€`;
 
-  const interest = movements
+  const interest = acc.movements
   .filter(mov => mov >0)
-  .map(deposit => deposit * 1.2 /100)
+  .map(deposit => (deposit * acc.interestRate) /100)
   .filter((int) =>{
     return int >= 1;
   })
@@ -116,7 +116,32 @@ const calcDisplaySummary = function(movements){
   labelSumInterest.textContent = `${interest}€`
 
 }
-calcDisplaySummary(account1.movements)
+
+//event handaler
+let currentAccount;
+
+//event listner
+btnLogin.addEventListener('click', function(e){
+  e.preventDefault();
+  currentAccount = accounts.find(acc => acc.username === inputLoginUsername.value);
+  console.log(currentAccount);
+
+  if(currentAccount?.pin === Number(inputLoginPin.value)){
+    //Disply UI and Message
+    labelWelcome.textContent = `Welcome back ${currentAccount.owner.split(' ')[0]}`;
+    containerApp.style.opacity = 100;
+
+    inputLoginUsername.value = inputLoginPin.value ='';
+    inputLoginPin.blur();
+    // Display movemnets
+    displayMovements(currentAccount.movements);
+    // display balance
+    
+    calcDisplayBalance(currentAccount.movements);
+    // display dummary
+    calcDisplaySummary(currentAccount);
+  }
+})
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -212,10 +237,10 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // const eurToUsd = 1.1;
 // const totalDepositUSD=movements.filter(mov => mov > 0).map( mov => mov * eurToUsd).reduce((acc,mov)=> acc + mov,0);
 // console.log(totalDepositUSD);  
-const calcAverageHumanAge = ages => {
-  const humanAges = ages.map(age => age <= 2? 2* age : 16 + age * 4);
-  console.log(humanAges);
-}
-calcAverageHumanAge([5,2,4,1,15,8,6]);
+// const calcAverageHumanAge = ages => {
+//   const humanAges = ages.map(age => age <= 2? 2* age : 16 + age * 4);
+//   console.log(humanAges);
+// }
+// calcAverageHumanAge([5,2,4,1,15,8,6]);
 
-console.log('hello world')
+// console.log('hello world')
